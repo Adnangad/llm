@@ -1,4 +1,5 @@
 import re
+import tiktoken
 
 # Retreives the data textand stores it into a var
 with open("wizard_of_oz.txt", "r", encoding='utf-8') as f:
@@ -42,14 +43,12 @@ class SimpleTokenizerV1:
         text = re.sub(r'\s+([,.?!"()\'])', r'\1', text)
         return text
     
-tokenizer = SimpleTokenizerV1(vocab)
+tokenizer = tiktoken.get_encoding("gpt2")
 
-text1 = "Hello, do you like tea?"
-text2 = "In the sunlit terraces of the palace."
-text = " <|endoftext|> ".join((text1, text2))
-print(text)
-encoded = tokenizer.encode(text)
+text = "Hello Adnan, do you like tea? <|endoftext|> In the sunlit terraces of"
+integers = tokenizer.encode(text, allowed_special={"<|endoftext|>"})
+print(integers)
+print(tokenizer.decode(integers))
 
-print(encoded)
-
-print("Decoded is:: ", tokenizer.decode(encoded))
+textz = tokenizer.encode(raw_text)
+print(len(textz))
